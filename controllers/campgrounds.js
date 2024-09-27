@@ -3,7 +3,6 @@ const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding')
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 const { cloudinary } = require('../cloudinary/index');
-const { query } = require('express');
 
 
 module.exports.index = async (req, res) => {
@@ -56,7 +55,7 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateCampground = async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
-    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }))
+    const imgs = req.files.map((f) => ({ url: f.path, filename: f.filename }))
     campground.images.push(...imgs)
     await campground.save()
     if (req.body.deleteImages) {
